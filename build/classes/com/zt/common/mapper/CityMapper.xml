@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 指向接口的全路径  接口包名+接口名  -->
+<mapper namespace="com.zt.common.mapper.CityMapper">
+	<resultMap type="City" id="CityResult">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="status" column="status"/>
+		<association property="province" column="provinceId" select="com.zt.common.mapper.ProvinceMapper.getProvinceById"/>
+			
+		
+	</resultMap>
+   <insert id="addCity" parameterType="City">
+   		insert into t_city(name,status,provinceId) values(#{name},#{status},#{province.id})
+   </insert>
+   <update id="updateCity" parameterType="City">
+   	update t_city set name=#{name},status=#{status},provinceId=#{province.id} where id=#{id}
+   </update>
+   <delete id="delCity" parameterType="int">
+   	delete from t_city where id=#{id}
+   </delete>
+   <select id="getCityById" parameterType="int" resultMap="CityResult">
+   	select * from t_city where id=#{id}
+   </select>
+   <select id="findCityByProvince" parameterType="int" resultMap="CityResult">
+   	select * from t_city where provinceId=#{id}
+   </select>
+</mapper>

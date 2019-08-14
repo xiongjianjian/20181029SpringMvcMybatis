@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 指向接口的全路径  接口包名+接口名  -->
+<mapper namespace="com.zt.common.mapper.ProvinceMapper">
+   <insert id="addProvince" parameterType="Province">
+   		insert into t_province(name,status) values(#{name},#{status})
+   </insert>
+   <update id="updateProvince" parameterType="Province">
+   	update t_province set name=#{name},status=#{status} where id=#{id}
+   </update>
+   <delete id="delProvince" parameterType="int">
+   	delete from t_province where id=#{id}
+   </delete>
+   <select id="getProvinceById" parameterType="int" resultType="Province">
+   	select * from t_province where id=#{id}
+   </select>
+   <select id="findAll" resultType="Province">
+   	select * from t_province
+   </select>
+</mapper>

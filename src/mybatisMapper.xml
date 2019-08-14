@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+   <properties resource="jdbc.properties"></properties>	
+   <typeAliases>	
+       <!-- 别名一个包 表示把该包下面的所有类都取别名  
+                         默认别名与类名保持一致 -->
+       <package name="com.zt.common.po"/>
+       <package name="com.zt.sale.po"/>
+   </typeAliases>
+   
+   
+	
+	<mappers>	
+	   <!--mappers 用package 可以申明自动识别包下面的所有映射文件 -->
+	    <package name="com.zt.common.mapper"/>
+	    <package name="com.zt.sale.mapper"/>
+	    <!-- 
+	    <mapper resource="com/zt/mapper/ClassesMapper.xml"/>
+	    <mapper resource="com/zt/mapper/StudentMapper.xml"/>
+	     -->	
+	</mappers>
+</configuration>

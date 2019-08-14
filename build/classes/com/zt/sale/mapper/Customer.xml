@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 指向接口的全路径  接口包名+接口名  -->
+<mapper namespace="com.zt.sale.mapper.Customer">
+	<resultMap type="Customer" id="CustomerResult">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="sex" column="sex"/>
+		<result property="company" column="company"/>
+		<result property="tel" column="tel"/>
+		<result property="address" column="address"/>
+		<result property="introduce" column="introduce"/>
+		<result property="status" column="status"/>
+		<result property="createTime" column="createTime"/>
+		<association property="province" column="provinceId" select="com.zt.common.mapper.ProvinceMapper.getProvinceById"/>
+		<association property="city" column="cityId" select="com.zt.common.mapper.CityMapper.getCityById"/>
+	</resultMap>
+	
+   <insert id="addCustomer" parameterType="Customer">
+   		insert into t_Customer(name,sex,company,tel,address,provinceId,cityId,introduce) 
+   		values(#{name},#{sex},#{company},#{tel},#{address},#{province.id},#{city.id},#{introduce})
+   </insert>
+   
+   <update id="updateCustomer" parameterType="Customer">
+   	update t_customer set name=#{name},status=#{status},provinceId=#{province.id},
+   	cityId=#{city.id},sex=#{sex},company=#{company},tel=#{tel},address=#{address},introduce=#{introduce}
+   	 where id=#{id}
+   </update>
+   <delete id="delCustomer" parameterType="int">
+   	delete from t_customer where id=#{id}
+   </delete>
+   <select id="getCustomerById" parameterType="int" resultMap="CustomerResult">
+   	select * from t_customer where id=#{id}
+   </select>
+   <select id="countCustomerByFilter" parameterType="map" >
+   	select count(*) from t_customer
+   	<where>
+   		<if test="name!=null"> and name like #{name}</if>
+   		<if test="company!=null"> and company like #{company}</if>
+   		<if test="provinceId!=null"> and provinceId=#{provinceId}</if>
+   		<if test="cityId!=null"> and cityId=#{cityId}</if>
+   	</where>
+   </select>
+   <select id="seachCustomerByFilter" parameterType="map" resultMap="CustomerResult">
+   	select * from t_customer
+   		<where>
+   		<if test="name!=null"> and name like #{name}</if>
+   		<if test="company!=null"> and company like #{company}</if>
+   		<if test="provinceId!=null"> and provinceId=#{provinceId}</if>
+   		<if test="cityId!=null"> and cityId=#{cityId}</if>
+   		<if test="start!=null and end!=null"> limit #{start},#{end}</if>
+   	</where>
+   </select>
+</mapper>

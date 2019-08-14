@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+               http://www.springframework.org/schema/context
+               http://www.springframework.org/schema/context/spring-context-4.0.xsd
+               http://www.springframework.org/schema/tx
+               http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+               http://www.springframework.org/schema/aop
+               http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+	<!-- 配置数据源 dataSource -->
+	<bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/erp?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true"/>
+		<property name="username" value="root"/>
+		<property name="password" value="root"/>
+	</bean>
+	<!-- sqlSessionFactory -->
+	<bean name="sf" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="configLocation">
+			<value>classpath:mybatisMapper.xml</value>
+		</property>
+	</bean>
+	<!--配置可以把myBatis中接口的mapper xml 转换成spring bean
+		MapperScannerConfigurer.class
+	  -->
+	  <bean name="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	  	<property name="sqlSessionFactory" ref="sf"></property>
+	  	<property name="basePackage">
+	  		<value>com.zt.*.mapper</value>
+	  	</property>
+	  </bean>
+	  <!-- 配置一个事务管理类 -->
+	  <bean name="txmanager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	  	<property name="dataSource" ref="dataSource"></property>
+	  </bean>
+	  <!-- 声明整个项目的事务采取申明式事务管理机制 -->
+	  <tx:annotation-driven transaction-manager="txmanager"/>
+</beans>
